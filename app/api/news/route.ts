@@ -27,6 +27,14 @@ const url = `${BASE}?${params.toString()}`
 
 
 try {
-    const re = await fetch(url, {cache: "no-store"})
+    const res = await fetch(url, {cache: "no-store"})
+    if(!res.ok){
+        return NextResponse.json({error :  `Upstream error : ${res.status}`},  {status: 500})
+    }
+    const data = await res.json();
+    return NextResponse.json(data, {status: 200})
+}catch (e: any){
+return NextResponse.json({ error: e?.message ?? "Unkwow error"}, {status: 500})
 }
+
 }
